@@ -187,8 +187,19 @@ footer{padding:54px 5vw 30px;background:#060911;border-top:1px solid var(--line)
   .hero-inner,.solution-wrap{grid-template-columns:1fr}.hero{min-height:auto}.hero-visual{min-height:auto}.sticky-copy{position:relative;top:auto}.dashboard-grid{grid-template-columns:repeat(2,1fr)}.steps-grid{grid-template-columns:repeat(2,1fr)}.step:nth-child(2)::after{display:none}.case-card{grid-template-columns:1fr}.case-num{margin-bottom:24px}.metrics{grid-template-columns:1fr 1fr}.feature-grid{grid-template-columns:1fr 1fr}.footer-inner{grid-template-columns:1fr 1fr}.section-head{display:block}.section-head .section-copy{margin-top:10px}.solution-detail-inner{grid-template-columns:1fr}.solution-image{border-left:none;border-top:1px solid var(--line)}
 }
 @media(max-width:720px){
-  nav{padding:0 20px}.nav-link{display:none}.hero,.section{padding-left:20px;padding-right:20px}.hero{padding-top:110px}.hero h1{font-size:3rem}.hero-stats,.metrics,.audience-grid,.form-row{grid-template-columns:1fr}.solution-tabs,.dashboard-grid,.steps-grid,.feature-grid{grid-template-columns:1fr}.solution-tab:nth-child(n){border-right:none;border-bottom:1px solid var(--line)}.solution-tab:last-child{border-bottom:none}.case-cols{grid-template-columns:1fr}.footer-inner{grid-template-columns:1fr}.hero-dashboard{transform:none}.float-badge{display:none}.section-number{display:none}
+  nav{padding:0 20px}.nav-link{display:none}.nav-hamburger{display:flex}.hero,.section{padding-left:20px;padding-right:20px}.hero{padding-top:110px}.hero h1{font-size:3rem}.hero-stats,.metrics,.audience-grid,.form-row{grid-template-columns:1fr}.solution-tabs,.dashboard-grid,.steps-grid,.feature-grid{grid-template-columns:1fr}.solution-tab:nth-child(n){border-right:none;border-bottom:1px solid var(--line)}.solution-tab:last-child{border-bottom:none}.case-cols{grid-template-columns:1fr}.footer-inner{grid-template-columns:1fr}.hero-dashboard{transform:none}.float-badge{display:none}.section-number{display:none}
 }
+/* ── MOBILE NAV ─────────────────────────────────────────────── */
+.nav-hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;width:40px;height:40px;background:rgba(255,255,255,.06);border:1px solid var(--line-2);border-radius:10px;cursor:pointer;padding:0 10px;flex-shrink:0}
+.nav-hamburger span{display:block;height:1.5px;background:#fff;border-radius:999px;transition:transform .25s,opacity .25s}
+.nav-hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.nav-hamburger.open span:nth-child(2){opacity:0}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.nav-mobile-menu{display:none;position:fixed;top:68px;left:0;right:0;z-index:999;background:rgba(8,11,19,.97);backdrop-filter:blur(22px);border-bottom:1px solid var(--line-2);padding:16px 20px 20px;flex-direction:column;gap:4px}
+.nav-mobile-menu.open{display:flex}
+.nav-mobile-link{display:block;padding:13px 16px;font-size:.95rem;font-weight:600;color:var(--muted);border-radius:10px;transition:.2s}
+.nav-mobile-link:hover{color:#fff;background:rgba(255,255,255,.05)}
+.nav-mobile-cta{display:block;margin-top:8px;padding:14px 16px;background:linear-gradient(135deg,var(--teal),var(--teal-2));color:#051013;font-weight:800;font-size:.95rem;border-radius:10px;text-align:center}
 </style>
 </head>
 <body class="font-corporate">
@@ -204,6 +215,17 @@ footer{padding:54px 5vw 30px;background:#060911;border-top:1px solid var(--line)
     <a href="#roi-kalkulator" class="nav-link">ROI</a>
     <a href="#skrbnistvo" class="nav-link">Skrbništvo</a>
     <a href="#demo-form" class="nav-cta">Zahtevajte DEMO</a>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Meni" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-mobile-menu" id="navMobileMenu">
+    <a href="#resitve" class="nav-mobile-link">Rešitve</a>
+    <a href="#dashboards" class="nav-mobile-link">Dashboardi</a>
+    <a href="#primeri" class="nav-mobile-link">Primeri</a>
+    <a href="#roi-kalkulator" class="nav-mobile-link">ROI</a>
+    <a href="#skrbnistvo" class="nav-mobile-link">Skrbništvo</a>
+    <a href="#demo-form" class="nav-mobile-cta">Zahtevajte DEMO →</a>
   </div>
 </nav>
 
@@ -659,6 +681,22 @@ document.getElementById('pbi-form').addEventListener('submit', function(e) {
   };
 
   xhr.send(payload);
+});
+
+// ── MOBILE NAV ─────────────────────────────────────────────────
+const hamburger = document.getElementById('navHamburger');
+const mobileMenu = document.getElementById('navMobileMenu');
+hamburger.addEventListener('click', function() {
+  const isOpen = mobileMenu.classList.toggle('open');
+  hamburger.classList.toggle('open', isOpen);
+  hamburger.setAttribute('aria-expanded', isOpen);
+});
+document.querySelectorAll('.nav-mobile-link, .nav-mobile-cta').forEach(link => {
+  link.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', false);
+  });
 });
 </script>
 </body>
