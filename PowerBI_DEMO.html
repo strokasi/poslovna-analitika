@@ -1,0 +1,665 @@
+<!DOCTYPE html> 
+<html lang="sl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Power BI DEMO – Poslovna analitika | Skupina stroka.si</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --teal:#3fa8a9;
+  --teal-2:#51d3d0;
+  --teal-dark:#2d8d8e;
+  --teal-soft:rgba(63,168,169,.11);
+  --teal-border:rgba(63,168,169,.24);
+  --gold:#f5b942;
+  --ink:#eef2f7;
+  --muted:#9aa3b5;
+  --muted-2:#626b7d;
+  --bg:#080b13;
+  --bg-2:#0c101b;
+  --bg-3:#101522;
+  --card:#121827;
+  --card-2:#151c2d;
+  --line:rgba(255,255,255,.075);
+  --line-2:rgba(255,255,255,.12);
+  --shadow:0 24px 70px rgba(0,0,0,.42);
+  --fh:'Inter',sans-serif;
+  --fb:'DM Sans',sans-serif;
+}
+
+body.font-corporate{--fh:'Inter',sans-serif}
+body.font-modern{--fh:'Space Grotesk',sans-serif}
+body.font-soft{--fh:'DM Sans',sans-serif}
+
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;inset:0;z-index:-3;background:radial-gradient(circle at 75% 8%,rgba(63,168,169,.15),transparent 32%),radial-gradient(circle at 20% 22%,rgba(81,211,208,.07),transparent 25%),linear-gradient(180deg,#080b13 0%,#0b0f18 48%,#080b13 100%)}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:68px;padding:0 5vw;display:flex;align-items:center;justify-content:space-between;background:rgba(8,11,19,.72);backdrop-filter:blur(22px);border-bottom:1px solid var(--line)}
+.nav-logo{font-family:var(--fh);font-weight:800;font-size:1rem;letter-spacing:-.02em;color:#fff}
+.nav-logo img{height:34px;width:auto}
+.footer-logo img{height:36px;width:auto}
+.nav-right{display:flex;align-items:center;gap:24px}
+.nav-link{font-size:.86rem;color:var(--muted);font-weight:600;transition:.22s}
+.nav-link:hover{color:#fff}
+.nav-cta{background:linear-gradient(135deg,var(--teal),var(--teal-2));color:#051013;font-weight:800;font-size:.86rem;padding:12px 22px;border-radius:10px;box-shadow:0 14px 32px rgba(63,168,169,.22);transition:.25s}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 18px 42px rgba(63,168,169,.32)}
+
+.section{position:relative;padding:112px 5vw;overflow:hidden}
+.section.compact{padding:84px 5vw}
+.section-dark{background:linear-gradient(180deg,rgba(8,11,19,.2),rgba(8,11,19,.95))}
+.section-panel{background:linear-gradient(180deg,rgba(15,21,34,.96),rgba(11,15,25,.96));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.section-panel::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:80px 80px;opacity:.45;pointer-events:none}
+.section-lightline{background:linear-gradient(180deg,#0d1320 0%,#101725 100%)}
+.s-max{max-width:1240px;margin:0 auto;position:relative;z-index:1}
+.section-kicker{display:inline-flex;align-items:center;gap:10px;font-size:.72rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--teal-2);margin-bottom:14px}
+.section-kicker::before{content:'';width:24px;height:1.5px;background:var(--teal)}
+.section-title{font-family:var(--fh);font-size:clamp(2rem,3.2vw,3.25rem);line-height:1.08;letter-spacing:-.025em;color:#fff;font-weight:800;margin-bottom:16px}
+.section-copy{font-size:1rem;color:var(--muted);line-height:1.75;font-weight:400;max-width:620px}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;margin-bottom:48px}
+.section-head .section-copy{max-width:440px}
+.section-number{position:absolute;right:5vw;top:36px;font-family:var(--fh);font-size:5rem;font-weight:800;color:rgba(255,255,255,.035);line-height:1;pointer-events:none}
+.soft-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(63,168,169,.35),rgba(255,255,255,.1),transparent);max-width:1240px;margin:0 auto}
+
+.hero{padding:132px 5vw 92px;min-height:760px;display:flex;align-items:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(63,168,169,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(63,168,169,.035) 1px,transparent 1px);background-size:72px 72px;mask-image:linear-gradient(to bottom,#000 0%,transparent 88%)}
+.hero-inner{max-width:1240px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1.02fr;gap:70px;align-items:center;position:relative;z-index:1}
+.hero h1{font-family:var(--fh);font-size:clamp(2.9rem,5.2vw,5.8rem);line-height:.98;letter-spacing:-.04em;color:#fff;font-weight:800;margin-bottom:24px;max-width:620px}
+.hero h1 span{color:var(--teal-2)}
+.hero p{font-size:1.05rem;color:var(--muted);line-height:1.8;max-width:520px;margin-bottom:34px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:.72rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--teal-2);margin-bottom:22px}
+.eyebrow::before{content:'';width:24px;height:1.5px;background:var(--teal)}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:42px}
+.btn-primary,.btn-secondary{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;font-size:.95rem;font-weight:800;padding:15px 26px;transition:.25s;border:1px solid transparent}
+.btn-primary{background:linear-gradient(135deg,var(--teal),var(--teal-2));color:#051013;box-shadow:0 16px 38px rgba(63,168,169,.23)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 22px 50px rgba(63,168,169,.32)}
+.btn-secondary{background:rgba(255,255,255,.035);border-color:var(--line-2);color:#fff}
+.btn-secondary:hover{border-color:var(--teal-border);background:var(--teal-soft)}
+.hero-stats{display:grid;grid-template-columns:repeat(3,minmax(110px,1fr));gap:22px;max-width:560px;padding-top:34px;border-top:1px solid var(--line)}
+.stat-v{font-family:var(--fh);font-size:2.35rem;font-weight:800;line-height:1;color:var(--teal-2);letter-spacing:-.03em}.stat-l{font-size:.78rem;color:var(--muted-2);margin-top:6px;font-weight:700}
+
+.hero-visual{position:relative;min-height:420px}
+.hero-dashboard{position:relative;background:linear-gradient(180deg,#141a29,#101523);border:1px solid var(--line-2);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;transform:perspective(1100px) rotateY(-7deg) rotateX(2deg)}
+.mock-bar{height:40px;background:#070a12;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px;padding:0 16px}.dot{width:8px;height:8px;border-radius:50%}.r{background:#ff5f57}.y{background:#febc2e}.g{background:#28c840}.mock-name{font-size:.68rem;color:rgba(255,255,255,.3);margin-left:8px;font-weight:700}
+.hero-dashboard-img{padding:16px;background:#0b101b}
+.hero-dashboard-img img{width:100%;height:auto;object-fit:contain;border-radius:13px;border:1px solid var(--line)}
+.float-badge{position:absolute;background:rgba(18,24,39,.96);border:1px solid var(--line-2);border-radius:14px;padding:12px 16px;display:flex;align-items:center;gap:11px;box-shadow:0 18px 45px rgba(0,0,0,.36);z-index:3}.float-badge.b1{left:-26px;bottom:70px}.float-badge.b2{right:-18px;top:70px}.badge-ico{width:34px;height:34px;border-radius:10px;background:var(--teal-soft);border:1px solid var(--teal-border);display:grid;place-items:center}.badge-ico svg{width:18px;height:18px;stroke:var(--teal-2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.float-badge strong{display:block;font-family:var(--fh);font-size:.95rem}.float-badge small{display:block;color:var(--muted-2);font-size:.68rem;margin-top:2px}
+
+.trust{padding:28px 5vw;background:rgba(12,16,27,.85);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.trust-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap}.trust-label{font-size:.72rem;color:var(--muted-2);font-weight:800;text-transform:uppercase;letter-spacing:.14em}.trust-logos{display:flex;gap:30px;flex-wrap:wrap}.trust-logos span{font-family:var(--fh);font-weight:800;color:rgba(255,255,255,.42)}
+
+.solution-wrap{display:grid;grid-template-columns:330px 1fr;gap:56px;align-items:start}.sticky-copy{position:sticky;top:100px}.solution-tabs{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line-2);border-radius:18px;overflow:hidden;background:rgba(255,255,255,.025);box-shadow:var(--shadow)}.solution-tab{padding:24px 18px;min-height:160px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);cursor:pointer;transition:.25s;position:relative}.solution-tab:nth-child(3n){border-right:none}.solution-tab:nth-child(n+4){border-bottom:none}.solution-tab:hover,.solution-tab.active{background:var(--teal-soft)}.solution-tab.active::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,var(--teal),var(--teal-2))}.tab-icon{width:42px;height:42px;border-radius:12px;background:var(--teal-soft);border:1px solid var(--teal-border);display:grid;place-items:center;margin-bottom:14px}.tab-icon svg{width:22px;height:22px;stroke:var(--teal-2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.tab-title{font-family:var(--fh);font-weight:800;font-size:.92rem;color:#fff;line-height:1.25;margin-bottom:5px}.tab-sub{font-size:.72rem;color:var(--muted-2);line-height:1.4}.solution-detail{display:none;margin-top:28px;background:linear-gradient(180deg,var(--card),#0f1522);border:1px solid var(--line-2);border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}.solution-detail.visible{display:block}.solution-detail-inner{display:grid;grid-template-columns:1fr 1.1fr}.solution-text{padding:34px}.solution-text h3{font-family:var(--fh);font-size:1.35rem;margin-bottom:12px}.solution-text p{color:var(--muted);line-height:1.75;margin-bottom:20px}.check-list{display:grid;gap:9px;margin-bottom:24px}.check-list div{display:flex;gap:10px;color:#d9dee9;font-size:.9rem}.check-list div::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--teal-2);margin-top:7px;flex:none}.solution-image{background:#0b101b;padding:22px;border-left:1px solid var(--line);display:grid;place-items:center}.screen{width:100%;background:#070a12;border:1px solid var(--line-2);border-radius:14px;overflow:hidden}.screen-top{height:34px;background:#060911;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:6px;padding:0 12px}.screen img{width:100%;height:auto;object-fit:contain;background:#111827;padding:6px}
+
+.dashboard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}.dashboard-card{position:relative;background:linear-gradient(180deg,var(--card),#0f1522);border:1px solid var(--line-2);border-radius:20px;overflow:hidden;box-shadow:0 18px 48px rgba(0,0,0,.26);transition:.28s}.dashboard-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(63,168,169,.12),transparent 36%);opacity:0;transition:.28s;pointer-events:none}.dashboard-card:hover{transform:translateY(-6px);border-color:var(--teal-border)}.dashboard-card:hover::before{opacity:1}.dashboard-img{padding:14px;background:#070a12;border-bottom:1px solid var(--line)}.dashboard-img img{width:100%;height:auto;object-fit:contain;border-radius:13px;border:1px solid var(--line);background:#121827;padding:6px}.dashboard-body{padding:24px}.dashboard-body h3{font-family:var(--fh);font-size:1.08rem;color:#fff;margin-bottom:10px}.dashboard-body p{font-size:.9rem;color:var(--muted);line-height:1.65;margin-bottom:18px}.tags{display:flex;flex-wrap:wrap;gap:7px}.tag{display:inline-flex;align-items:center;font-size:.72rem;color:var(--teal-2);background:var(--teal-soft);border:1px solid var(--teal-border);padding:5px 11px;border-radius:999px;font-weight:800}
+
+.case-slider{overflow:hidden}.case-track{display:flex;transition:transform .48s cubic-bezier(.77,0,.175,1)}.case-slide{flex:0 0 100%;padding:2px}.case-card{display:grid;grid-template-columns:300px 1fr;background:linear-gradient(180deg,var(--card),#0f1522);border:1px solid var(--line-2);border-radius:22px;overflow:hidden;box-shadow:var(--shadow)}.case-left{padding:38px 30px;background:linear-gradient(155deg,rgba(63,168,169,.18),rgba(255,255,255,.025));border-right:1px solid var(--line)}.case-num{font-family:var(--fh);font-size:4.2rem;font-weight:800;color:rgba(81,211,208,.18);line-height:1;margin-bottom:90px}.case-company{font-family:var(--fh);font-weight:800;font-size:1.25rem}.case-type{font-size:.75rem;color:var(--teal-2);font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-top:7px}.case-content{padding:38px}.case-cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px}.case-label{font-size:.7rem;color:var(--teal-2);font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}.case-text{font-size:.92rem;color:var(--muted);line-height:1.65}.result-box{background:#0d1422;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px}.result-box strong{font-family:var(--fh);font-size:1.25rem;color:var(--teal-2)}.result-box span{display:block;font-size:.76rem;color:var(--muted-2);line-height:1.35;margin-top:3px}.case-footer{margin-top:28px;padding-top:20px;border-top:1px solid var(--line)}.text-link{color:var(--teal-2);font-weight:800;font-size:.9rem}.slider-nav{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:28px}.slider-btn,.slider-dot{border:none;cursor:pointer}.slider-btn{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.035);border:1px solid var(--line-2);color:#fff;font-size:1.1rem}.slider-dot{width:9px;height:9px;border-radius:20px;background:rgba(255,255,255,.16);transition:.25s}.slider-dot.active{width:28px;background:var(--teal-2)}
+
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line-2);border:1px solid var(--line-2);border-radius:22px;overflow:hidden;box-shadow:var(--shadow)}.step{background:linear-gradient(180deg,var(--card),#0f1522);padding:34px 24px;position:relative}.step-num{font-family:var(--fh);font-size:2.7rem;font-weight:800;color:rgba(81,211,208,.18);line-height:1;margin-bottom:18px}.step-icon{width:46px;height:46px;border-radius:14px;background:var(--teal-soft);border:1px solid var(--teal-border);display:grid;place-items:center;margin-bottom:18px}.step-icon svg{width:23px;height:23px;stroke:var(--teal-2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.step h3{font-family:var(--fh);font-size:1rem;margin-bottom:9px}.step p{font-size:.86rem;color:var(--muted);line-height:1.65}.step::after{content:'→';position:absolute;right:-12px;top:50%;transform:translateY(-50%);width:26px;height:26px;border-radius:50%;background:#0d1320;border:1px solid var(--line-2);display:grid;place-items:center;color:var(--teal-2);z-index:3}.step:last-child::after{display:none}
+
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-bottom:24px}.metric{background:linear-gradient(180deg,var(--card),#0f1522);border:1px solid var(--line-2);border-radius:20px;padding:30px;text-align:center;box-shadow:0 18px 42px rgba(0,0,0,.22)}.metric strong{display:block;font-family:var(--fh);font-size:3rem;color:var(--teal-2);letter-spacing:-.04em}.metric span{display:block;color:#dce2ee;font-weight:800;margin-top:4px}.metric small{display:block;color:var(--muted-2);margin-top:6px}.feature-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:1px;background:var(--line-2);border:1px solid var(--line-2);border-radius:20px;overflow:hidden}.feature{background:var(--card);padding:26px}.feature h3{font-family:var(--fh);font-size:1rem;margin-bottom:8px}.feature p{font-size:.86rem;color:var(--muted);line-height:1.65}.feature-bar{width:42px;height:3px;background:var(--teal-2);border-radius:999px;margin-bottom:18px}
+
+.form-shell{max-width:880px;margin:0 auto}.form-intro{text-align:center;margin-bottom:38px}.form-intro .section-copy{margin:0 auto}.audience-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px}.audience{background:rgba(255,255,255,.035);border:1px solid var(--line-2);border-radius:16px;padding:18px}.audience strong{display:block;font-family:var(--fh);font-size:.95rem;margin-bottom:6px}.audience span{font-size:.78rem;color:var(--muted);line-height:1.45}.form-box{background:linear-gradient(180deg,var(--card),#0f1522);border:1px solid var(--line-2);border-radius:24px;box-shadow:var(--shadow);overflow:hidden}.form-box::before{content:'';display:block;height:3px;background:linear-gradient(90deg,var(--teal),var(--teal-2),transparent)}.form-inner{padding:38px}.form-title{font-family:var(--fh);font-size:1.45rem;font-weight:800;margin-bottom:6px}.form-sub{color:var(--muted-2);font-size:.9rem;margin-bottom:26px}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{display:grid;gap:7px;margin-bottom:14px}.field label{font-size:.7rem;color:var(--muted-2);font-weight:800;text-transform:uppercase;letter-spacing:.1em}.field input,.field select{height:48px;background:rgba(255,255,255,.04);border:1px solid var(--line-2);border-radius:12px;color:#fff;font-family:var(--fb);font-size:.94rem;padding:0 14px;outline:none}.field input:focus,.field select:focus{border-color:var(--teal-border);box-shadow:0 0 0 4px rgba(63,168,169,.09)}.field select option{background:#101522;color:#fff}.submit{width:100%;height:52px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--teal),var(--teal-2));color:#051013;font-weight:900;font-size:.98rem;cursor:pointer;margin-top:4px}.note{margin-top:22px;background:var(--teal-soft);border:1px solid var(--teal-border);border-radius:14px;padding:16px;color:var(--muted);font-size:.86rem;line-height:1.6}.note strong{color:var(--teal-2)}.privacy{text-align:center;font-size:.74rem;color:var(--muted-2);margin-top:16px}.success{display:none;text-align:center;padding:32px 0}.success h3{font-family:var(--fh);font-size:1.5rem;margin-bottom:8px}.success p{color:var(--muted)}
+
+footer{padding:54px 5vw 30px;background:#060911;border-top:1px solid var(--line)}.footer-inner{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:36px}.footer-logo{font-family:var(--fh);font-weight:800}.footer-tag{font-size:.84rem;color:var(--muted-2);line-height:1.65;max-width:260px;margin-top:10px}.footer-col h4{font-size:.7rem;color:rgba(255,255,255,.22);letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px}.footer-col a{display:block;color:rgba(255,255,255,.4);font-size:.86rem;margin-bottom:8px}.footer-col a:hover{color:var(--teal-2)}.footer-bottom{max-width:1240px;margin:32px auto 0;padding-top:20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:rgba(255,255,255,.18);font-size:.76rem}
+
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .65s ease,transform .65s ease}.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ── DASHBOARD FILTERS ─────────────────────────────────────── */
+.dashboard-filters{display:flex;gap:32px;flex-wrap:wrap;margin-bottom:36px;padding:24px 28px;background:linear-gradient(180deg,var(--card),#0f1522);border:1px solid var(--line-2);border-radius:18px}
+.filter-group{flex:1;min-width:220px}
+.filter-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--teal-2);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.filter-label::before{content:'';width:16px;height:1.5px;background:var(--teal)}
+.filter-pills{display:flex;flex-wrap:wrap;gap:8px}
+.filter-pill{padding:8px 16px;border-radius:999px;font-size:.78rem;font-weight:700;cursor:pointer;border:1px solid var(--line-2);background:rgba(255,255,255,.03);color:var(--muted);transition:.2s;white-space:nowrap}
+.filter-pill:hover{border-color:var(--teal-border);color:#fff;background:var(--teal-soft)}
+.filter-pill.active{border-color:var(--teal);background:var(--teal-soft);color:var(--teal-2)}
+.dashboard-card{transition:.28s}
+.dashboard-card.hidden{display:none}
+
+/* ── ROI CALCULATOR ─────────────────────────────────────────── */
+.roi-wrap{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:start}
+.roi-inputs{display:grid;gap:20px}
+.roi-input-group{display:grid;gap:8px}
+.roi-input-group label{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-2)}
+.roi-slider-row{display:flex;align-items:center;gap:16px}
+.roi-slider{-webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:999px;background:var(--line-2);outline:none;cursor:pointer}
+.roi-slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--teal-2));cursor:pointer;box-shadow:0 0 0 4px rgba(63,168,169,.2)}
+.roi-val{font-family:var(--fh);font-size:1.05rem;font-weight:800;color:var(--teal-2);min-width:64px;text-align:right}
+.roi-results{background:linear-gradient(180deg,var(--card),#0f1522);border:1px solid var(--line-2);border-radius:22px;padding:34px;box-shadow:var(--shadow)}
+.roi-results::before{content:'';display:block;height:3px;background:linear-gradient(90deg,var(--teal),var(--teal-2),transparent);border-radius:999px;margin-bottom:28px}
+.roi-metric{margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid var(--line)}
+.roi-metric:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.roi-metric-label{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-2);margin-bottom:6px}
+.roi-metric-value{font-family:var(--fh);font-size:2.1rem;font-weight:800;color:var(--teal-2);letter-spacing:-.03em;line-height:1}
+.roi-metric-sub{font-size:.78rem;color:var(--muted);margin-top:4px}
+.roi-note{margin-top:20px;font-size:.78rem;color:var(--muted-2);line-height:1.6;padding:14px 16px;background:rgba(255,255,255,.025);border-radius:10px;border:1px solid var(--line)}
+
+/* ── CARE CONTRACT ──────────────────────────────────────────── */
+.care-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:center}
+.care-features{display:grid;gap:16px;margin-top:32px}
+.care-feature{display:flex;gap:16px;align-items:flex-start;padding:20px;background:linear-gradient(180deg,var(--card),#0f1522);border:1px solid var(--line-2);border-radius:16px;transition:.25s}
+.care-feature:hover{border-color:var(--teal-border);background:var(--teal-soft)}
+.care-ico{width:42px;height:42px;border-radius:12px;background:var(--teal-soft);border:1px solid var(--teal-border);display:grid;place-items:center;flex:none}
+.care-ico svg{width:20px;height:20px;stroke:var(--teal-2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.care-feature h4{font-family:var(--fh);font-size:.95rem;color:#fff;margin-bottom:4px}
+.care-feature p{font-size:.82rem;color:var(--muted);line-height:1.6}
+.care-highlight{background:linear-gradient(180deg,var(--card),#0f1522);border:1px solid var(--teal-border);border-radius:22px;padding:38px;box-shadow:var(--shadow)}
+.care-highlight::before{content:'';display:block;height:3px;background:linear-gradient(90deg,var(--teal),var(--teal-2),transparent);border-radius:999px;margin-bottom:28px}
+.care-highlight h3{font-family:var(--fh);font-size:1.5rem;margin-bottom:12px}
+.care-highlight p{color:var(--muted);line-height:1.75;margin-bottom:24px}
+.care-tag{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--teal-soft);border:1px solid var(--teal-border);border-radius:999px;font-size:.78rem;font-weight:800;color:var(--teal-2);margin-bottom:8px}
+
+/* ── EXPERT PROFILE ─────────────────────────────────────────── */
+.expert-card{display:grid;grid-template-columns:340px 1fr;background:linear-gradient(180deg,var(--card),#0f1522);border:1px solid var(--line-2);border-radius:24px;overflow:hidden;box-shadow:var(--shadow)}
+.expert-photo-col{position:relative;background:linear-gradient(155deg,rgba(63,168,169,.2),rgba(63,168,169,.04));border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:0 0 38px;overflow:hidden}
+.expert-photo{width:220px;height:220px;border-radius:50%;object-fit:cover;border:3px solid var(--teal-border);box-shadow:0 20px 50px rgba(0,0,0,.4);margin-bottom:22px}
+.expert-name{font-family:var(--fh);font-size:1.25rem;font-weight:800;color:#fff;text-align:center}
+.expert-title-badge{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--teal-2);text-align:center;margin-top:5px}
+.expert-content{padding:44px}
+.expert-content h2{font-family:var(--fh);font-size:1.65rem;margin-bottom:16px}
+.expert-content p{color:var(--muted);line-height:1.8;margin-bottom:20px}
+.expert-highlights{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px}
+.expert-highlight{padding:16px;background:rgba(255,255,255,.03);border:1px solid var(--line-2);border-radius:14px}
+.expert-highlight strong{display:block;font-family:var(--fh);font-size:.95rem;color:#fff;margin-bottom:4px}
+.expert-highlight small{font-size:.78rem;color:var(--muted-2)}
+.linkedin-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 24px;background:linear-gradient(135deg,#0077b5,#005fa3);border-radius:12px;font-weight:800;font-size:.9rem;color:#fff;transition:.25s;border:1px solid rgba(0,119,181,.4)}
+.linkedin-btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(0,119,181,.3)}
+.linkedin-btn svg{width:18px;height:18px;fill:#fff}
+.expert-deco{position:absolute;top:30px;right:-30px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(63,168,169,.25),transparent 70%);pointer-events:none}
+
+@media(max-width:1080px){
+.roi-wrap,.care-grid,.expert-card{grid-template-columns:1fr}
+.expert-photo-col{padding:38px;border-right:none;border-bottom:1px solid var(--line)}
+.expert-photo{width:160px;height:160px}
+}
+@media(max-width:720px){
+.dashboard-filters{flex-direction:column;gap:20px}
+.roi-wrap,.care-grid,.expert-highlights{grid-template-columns:1fr}
+}
+
+@media(max-width:1080px){
+  .hero-inner,.solution-wrap{grid-template-columns:1fr}.hero{min-height:auto}.hero-visual{min-height:auto}.sticky-copy{position:relative;top:auto}.dashboard-grid{grid-template-columns:repeat(2,1fr)}.steps-grid{grid-template-columns:repeat(2,1fr)}.step:nth-child(2)::after{display:none}.case-card{grid-template-columns:1fr}.case-num{margin-bottom:24px}.metrics{grid-template-columns:1fr 1fr}.feature-grid{grid-template-columns:1fr 1fr}.footer-inner{grid-template-columns:1fr 1fr}.section-head{display:block}.section-head .section-copy{margin-top:10px}.solution-detail-inner{grid-template-columns:1fr}.solution-image{border-left:none;border-top:1px solid var(--line)}
+}
+@media(max-width:720px){
+  nav{padding:0 20px}.nav-link{display:none}.hero,.section{padding-left:20px;padding-right:20px}.hero{padding-top:110px}.hero h1{font-size:3rem}.hero-stats,.metrics,.audience-grid,.form-row{grid-template-columns:1fr}.solution-tabs,.dashboard-grid,.steps-grid,.feature-grid{grid-template-columns:1fr}.solution-tab:nth-child(n){border-right:none;border-bottom:1px solid var(--line)}.solution-tab:last-child{border-bottom:none}.case-cols{grid-template-columns:1fr}.footer-inner{grid-template-columns:1fr}.hero-dashboard{transform:none}.float-badge{display:none}.section-number{display:none}
+}
+</style>
+</head>
+<body class="font-corporate">
+
+<nav>
+<a href="https://www.stroka.si" class="nav-logo" target="_blank" rel="noopener">
+  <img src="https://stroka.si/Portals/0/strokasi_bel_png.png" alt="stroka.si">
+</a>
+  <div class="nav-right">
+    <a href="#resitve" class="nav-link">Rešitve</a>
+    <a href="#dashboards" class="nav-link">Dashboardi</a>
+    <a href="#primeri" class="nav-link">Primeri</a>
+    <a href="#roi-kalkulator" class="nav-link">ROI</a>
+    <a href="#skrbnistvo" class="nav-link">Skrbništvo</a>
+    <a href="#demo-form" class="nav-cta">Zahtevajte DEMO</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="reveal">
+      <div class="eyebrow">Power BI poslovna analitika</div>
+      <h1>Podatki, ki vodijo <span>prave</span> odločitve</h1>
+      <p>Odkrijte, kako naše Power BI rešitve surove poslovne podatke pretvorijo v jasne vpoglede za finance, prodajo, proizvodnjo, nabavo in management.</p>
+      <div class="hero-actions">
+        <a href="#demo-form" class="btn-primary">Dostop do DEMO →</a>
+        <a href="#resitve" class="btn-secondary">Ogled rešitev</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="stat-v">100+</div><div class="stat-l">implementiranih plošč</div></div>
+        <div><div class="stat-v">30+</div><div class="stat-l">let izkušenj</div></div>
+        <div><div class="stat-v">800+</div><div class="stat-l">strank</div></div>
+      </div>
+    </div>
+
+    <div class="hero-visual reveal">
+      <div class="hero-dashboard">
+        <div class="mock-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="mock-name">stroka.si · Power BI</span></div>
+        <div class="hero-dashboard-img">
+          <img src="https://stroka.si/Portals/0/PANTHEON-dashboard.png" alt="PANTHEON Power BI dashboard">
+        </div>
+      </div>
+      <div class="float-badge b1"><div class="badge-ico"><svg viewBox="0 0 24 24"><rect x="4" y="12" width="3" height="7" rx="1"/><rect x="10" y="8" width="3" height="11" rx="1"/><rect x="16" y="5" width="3" height="14" rx="1"/><path d="M3 20h18"/></svg></div><div><strong>Live podatki</strong><small>Posodobljeno ravnokar</small></div></div>
+      <div class="float-badge b2"><div><strong>Power BI</strong><small>ERP, finance, prodaja</small></div></div>
+    </div>
+  </div>
+</header>
+
+<div class="trust">
+  <div class="trust-inner">
+    <div class="trust-label">Zaupajo nam</div>
+    <div class="trust-logos"><span>Carglass</span><span>Evitas</span><span>Blažič</span><span>Cleangrad</span><span>Fridro</span><span>Rihter</span><span>Makom</span><span>TBS Team 24</span><span>Weiler</span><span>Pharmalinea</span><span>Bijol</span><span>Biostile</span></div>
+  </div>
+</div>
+
+<section class="section section-panel" id="resitve">
+  <div class="section-number">01</div>
+  <div class="s-max solution-wrap">
+    <div class="sticky-copy reveal">
+      <div class="section-kicker">Rešitve po področjih</div>
+      <h2 class="section-title">Dobre prakse, ki jih lahko uporabite takoj</h2>
+      <p class="section-copy">Kliknite na poslovno področje in si oglejte, kako posamezna Power BI rešitev pomaga pri odločanju, nadzoru KPI-jev in hitrejšem dostopu do podatkov.</p>
+      <a href="#demo-form" class="btn-primary" style="margin-top:28px">Stopite v stik →</a>
+    </div>
+
+    <div class="reveal">
+      <div class="solution-tabs">
+        <div class="solution-tab active" data-tab="fincheck"><div class="tab-icon"><svg viewBox="0 0 24 24"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M7 15l4-5 4 3 5-7"/></svg></div><div class="tab-title">FinCheck</div><div class="tab-sub">Finančni kazalniki za vodstvo</div></div>
+        <div class="solution-tab" data-tab="cashflow"><div class="tab-icon"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 16 0"/><path d="M12 4v8l4 3"/><path d="M6 18h12"/></svg></div><div class="tab-title">CashFlow Planner</div><div class="tab-sub">Likvidnost, prilivi in odlivi</div></div>
+        <div class="solution-tab" data-tab="oee"><div class="tab-icon"><svg viewBox="0 0 24 24"><rect x="4" y="13" width="3" height="7"/><rect x="10" y="8" width="3" height="12"/><rect x="16" y="4" width="3" height="16"/></svg></div><div class="tab-title">OEE proizvodnja</div><div class="tab-sub">Učinkovitost strojev in izmen</div></div>
+        <div class="solution-tab" data-tab="sales"><div class="tab-icon"><svg viewBox="0 0 24 24"><path d="M4 6h2l2 10h10l2-7H8"/><circle cx="10" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg></div><div class="tab-title">Prodaja</div><div class="tab-sub">Kupci, artikli, marže in trendi</div></div>
+        <div class="solution-tab" data-tab="purchase"><div class="tab-icon"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg></div><div class="tab-title">Nabava in zaloge</div><div class="tab-sub">Dobavitelji, obrati in kapital</div></div>
+        <div class="solution-tab" data-tab="custom"><div class="tab-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4v8l5 3"/></svg></div><div class="tab-title">DEMO po meri</div><div class="tab-sub">Za specifične KPI-je in vire</div></div>
+      </div>
+
+      <div id="detail-fincheck" class="solution-detail visible"><div class="solution-detail-inner"><div class="solution-text"><h3>FinCheck — finančni kazalniki</h3><p>Celovit pregled finančnega zdravja podjetja v realnem času. Vodstvo dobi jasne KPI-je, trende in opozorila brez ročnega zbiranja podatkov.</p><div class="check-list"><div>Prihodki, odhodki in marže</div><div>EBITDA, ROI in primerjave s planom</div><div>Terjatve in obveznosti po zapadlosti</div><div>Drill-down po poslovnih enotah in strankah</div></div><a href="https://www.stroka.si/Kaj-delamo/Poslovna-analitika/Gradivo/fincheck-power-bi-nadzorna-plo%c5%a1%c4%8da-analiti%c4%8dni-temelj-pravih-odlo%c4%8ditev" target="_blank" rel="noopener" class="btn-primary">Preberite več →</a></div><div class="solution-image"><div class="screen"><div class="screen-top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div><img src="https://stroka.si/Portals/0/FinCheck_Page_1.png" alt="FinCheck dashboard"></div></div></div></div>
+      <div id="detail-cashflow" class="solution-detail"><div class="solution-detail-inner"><div class="solution-text"><h3>CashFlow Planner — denarni tok</h3><p>Pregled prilivov, odlivov in napovedi likvidnosti, da lahko pravočasno ukrepate pri tveganjih.</p><div class="check-list"><div>Prilivi in odlivi po obdobjih</div><div>Napoved likvidnosti</div><div>Zapadle terjatve in dobavitelji</div><div>Planirano proti realiziranemu</div></div><a href="https://www.stroka.si/Vsebine/Novice-in-obvestila/powerbi-cashflow-planner-naj-podatki-delajo-v-vaso-korist" target="_blank" rel="noopener" class="btn-primary">Preberite več →</a></div><div class="solution-image"><div class="screen"><div class="screen-top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div><img src="https://stroka.si/Portals/0/Cashflow%20analysis_Page_2.png" alt="Cashflow dashboard"></div></div></div></div>
+      <div id="detail-oee" class="solution-detail"><div class="solution-detail-inner"><div class="solution-text"><h3>OEE — učinkovitost strojev</h3><p>Merjenje razpoložljivosti, zmogljivosti in kakovosti proizvodnje za odpravo ozkih grl.</p><div class="check-list"><div>OEE po stroju, izmeni ali obratu</div><div>Vzroki zastojev in izpadov</div><div>Primerjave med obdobji</div><div>Opozorila pri padcih pod cilj</div></div><a href="https://www.stroka.si/Kaj-delamo/Poslovna-analitika/Gradivo/power-bi-nadzorna-plosca-oee-kazalnikov-odpravite-sibke-tocke-v-proizvodnji" target="_blank" rel="noopener" class="btn-primary">Preberite več →</a></div><div class="solution-image"><div class="screen"><div class="screen-top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div><img src="https://stroka.si/Portals/0/Proizvodnja_demo%20(1)_Page_1.png" alt="OEE dashboard"></div></div></div></div>
+      <div id="detail-sales" class="solution-detail"><div class="solution-detail-inner"><div class="solution-text"><h3>Analitika prodaje</h3><p>Pregled prodaje po kupcih, prodajalcih, regijah, artiklih in obdobjih z vpogledom v marže.</p><div class="check-list"><div>Realizacija po kupcih in prodajalcih</div><div>Plan proti realizaciji</div><div>ABC analiza strank in artiklov</div><div>Marže in prodajni trendi</div></div><a href="https://www.stroka.si/Vsebine/Blogi-in-webinarji/microsoft-power-bi-pri-vodenju-podjetja-se-zanesite-na-poslovno-inteligenco" target="_blank" rel="noopener" class="btn-primary">Preberite več →</a></div><div class="solution-image"><div class="screen"><div class="screen-top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div><img src="https://stroka.si/Portals/0/Sales%20analysis_Page_02.png" alt="Sales dashboard"></div></div></div></div>
+      <div id="detail-purchase" class="solution-detail"><div class="solution-detail-inner"><div class="solution-text"><h3>Analitika nabave in zalog</h3><p>Obvladujte stroške nabave, dobavitelje, zaloge in vezan kapital z jasnimi Power BI vpogledi.</p><div class="check-list"><div>Nabavni stroški po dobavitelju</div><div>Obrat zalog in zastarelost</div><div>Cenovni trendi in primerjave</div><div>Vezan kapital in opozorila</div></div><a href="#demo-form" class="btn-primary">Zahtevajte DEMO →</a></div><div class="solution-image"><div class="screen"><div class="screen-top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div><img src="https://stroka.si/Portals/0/Purchase%20analysis_Page_2.png" alt="Purchase dashboard"></div></div></div></div>
+      <div id="detail-custom" class="solution-detail"><div class="solution-detail-inner"><div class="solution-text"><h3>DEMO po meri</h3><p>Pripravimo demo, ki se prilagodi vašim procesom, KPI-jem, podatkovnim virom in panogi.</p><div class="check-list"><div>Analiza vaših poslovnih potreb</div><div>Prilagoditev predlog in dashboardov</div><div>Integracija z ERP, CRM ali drugimi sistemi</div><div>Konsultacija s Power BI strokovnjakom</div></div><a href="mailto:ccc@stroka.si" class="btn-primary">Pišite nam →</a></div><div class="solution-image"><div class="screen"><div class="screen-top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div><img src="https://stroka.si/Portals/0/LotusBI-dashboard.png" alt="LotusBI dashboard"></div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="soft-divider"></div>
+
+<section class="section section-lightline" id="dashboards">
+  <div class="section-number">02</div>
+  <div class="s-max">
+    <div class="section-head reveal">
+      <div><div class="section-kicker">Vpogledi v praksi</div><h2 class="section-title">Naše rešitve</h2></div>
+    </div>
+    <div class="dashboard-filters reveal">
+      <div class="filter-group">
+        <div class="filter-label">Panoga</div>
+        <div class="filter-pills" id="filterPanoga">
+          <span class="filter-pill active" data-filter="panoga" data-value="all">Vse panoge</span>
+          <span class="filter-pill" data-filter="panoga" data-value="proizvodnja">Proizvodnja</span>
+          <span class="filter-pill" data-filter="panoga" data-value="storitve">Storitveno podjetje</span>
+          <span class="filter-pill" data-filter="panoga" data-value="trgovina">Trgovina</span>
+          <span class="filter-pill" data-filter="panoga" data-value="racunovodstvo">Računovodstvo</span>
+          <span class="filter-pill" data-filter="panoga" data-value="financne-institucije">Finančne institucije</span>
+        </div>
+      </div>
+      <div class="filter-group">
+        <div class="filter-label">Vloga v podjetju</div>
+        <div class="filter-pills" id="filterVloga">
+          <span class="filter-pill active" data-filter="vloga" data-value="all">Vse vloge</span>
+          <span class="filter-pill" data-filter="vloga" data-value="ceo">CEO / Direktor</span>
+          <span class="filter-pill" data-filter="vloga" data-value="prodaja">Vodja prodaje</span>
+          <span class="filter-pill" data-filter="vloga" data-value="marketing">Vodja marketinga</span>
+          <span class="filter-pill" data-filter="vloga" data-value="projekti">Vodja projektne pisarne</span>
+          <span class="filter-pill" data-filter="vloga" data-value="proizvodnja">Vodja proizvodnje</span>
+          <span class="filter-pill" data-filter="vloga" data-value="nabava">Vodja nabave</span>
+          <span class="filter-pill" data-filter="vloga" data-value="financ">Vodja financ</span>
+          <span class="filter-pill" data-filter="vloga" data-value="racunovodja">Računovodja</span>
+        </div>
+      </div>
+    </div>
+    <div class="dashboard-grid reveal" id="dashboardGrid">
+      <article class="dashboard-card" data-panoga="all storitve trgovina proizvodnja racunovodstvo financne-institucije" data-vloga="all ceo prodaja marketing projekti proizvodnja financ racunovodja"><div class="dashboard-img"><img src="https://stroka.si/Portals/0/FinCheck_Page_1.png" alt="FinCheck"></div><div class="dashboard-body"><h3>FinCheck – finančni kazalniki</h3><p>Finančno zdravje podjetja, KPI-ji, marže, terjatve in trendi za vodstvo.</p><div class="tags"><span class="tag">Finance</span><span class="tag">EBITDA</span><span class="tag">Terjatve</span></div></div></article>
+      <article class="dashboard-card" data-panoga="all storitve trgovina proizvodnja racunovodstvo financne-institucije" data-vloga="all ceo projekti financ racunovodja"><div class="dashboard-img"><img src="https://stroka.si/Portals/0/PANTHEON-dashboard.png" alt="PANTHEON analitika poslovanja"></div><div class="dashboard-body"><h3>PANTHEON analitika poslovanja</h3><p>Power BI nadzorne plošče, povezane s PANTHEON ERP podatki za pregled poslovanja.</p><div class="tags"><span class="tag">ERP</span><span class="tag">PANTHEON</span><span class="tag">Integracija</span></div></div></article>
+      <article class="dashboard-card" data-panoga="all storitve trgovina racunovodstvo financne-institucije" data-vloga="all ceo prodaja financ racunovodja"><div class="dashboard-img"><img src="https://stroka.si/Portals/0/Cashflow%20analysis_Page_2.png" alt="Cashflow"></div><div class="dashboard-body"><h3>CashFlow Planner – načrtovanje denarnega toka</h3><p>Pregled prilivov, odlivov, zapadlih terjatev in napovedi likvidnosti.</p><div class="tags"><span class="tag">Cashflow</span><span class="tag">Likvidnost</span><span class="tag">Napoved</span></div></div></article>
+      <article class="dashboard-card" data-panoga="all trgovina proizvodnja" data-vloga="all ceo projekti nabava"><div class="dashboard-img"><img src="https://stroka.si/Portals/0/Inventory%20turnover%20analysis_Page_2.png" alt="Inventory"></div><div class="dashboard-body"><h3>Analitika obračanja zalog</h3><p>Analiza obračanja zalog, zastarelih artiklov in vezanega kapitala.</p><div class="tags"><span class="tag">Zaloge</span><span class="tag">ABC analiza</span><span class="tag">Kapital</span></div></div></article>
+      <article class="dashboard-card" data-panoga="all storitve trgovina proizvodnja" data-vloga="all ceo projekti prodaja nabava"><div class="dashboard-img"><img src="https://stroka.si/Portals/0/Purchase%20analysis_Page_2.png" alt="Purchase"></div><div class="dashboard-body"><h3>Analitika nabave</h3><p>Nabavni stroški, dobavitelji, cenovni trendi in učinkovitost nabave.</p><div class="tags"><span class="tag">Nabava</span><span class="tag">Dobavitelji</span><span class="tag">Cene</span></div></div></article>
+      <article class="dashboard-card" data-panoga="all storitve trgovina" data-vloga="all ceo prodaja marketing"><div class="dashboard-img"><img src="https://stroka.si/Portals/0/Sales%20analysis_Page_02.png" alt="Sales"></div><div class="dashboard-body"><h3>Analitika prodaje</h3><p>Prodaja po kupcih, prodajalcih, regijah, artiklih in maržah.</p><div class="tags"><span class="tag">Prodaja</span><span class="tag">Kupci</span><span class="tag">Marže</span></div></div></article>
+      <article class="dashboard-card" data-panoga="all proizvodnja" data-vloga="all ceo proizvodnja projekti"><div class="dashboard-img"><img src="https://stroka.si/Portals/0/Proizvodnja_demo%20(1)_Page_1.png" alt="OEE"></div><div class="dashboard-body"><h3>Analitika proizvodnje / OEE</h3><p>Učinkovitost strojev, zastoji, izmene in proizvodna zmogljivost.</p><div class="tags"><span class="tag">OEE</span><span class="tag">Zastoji</span><span class="tag">Izmene</span></div></div></article>
+      <article class="dashboard-card" data-panoga="all storitve trgovina proizvodnja" data-vloga="all ceo prodaja marketing projekti nabava"><div class="dashboard-img"><img src="https://stroka.si/Portals/0/LotusBI-dashboard.png" alt="LotusBI"></div><div class="dashboard-body"><h3>Lotus BI – poslovna inteligenca</h3><p>Poslovni podatki na enem mestu z jasnimi KPI-ji in uporabnimi vpogledi.</p><div class="tags"><span class="tag">BI rešitev</span><span class="tag">KPI</span><span class="tag">Vpogledi</span></div></div></article>
+      <article class="dashboard-card" data-panoga="all storitve trgovina" data-vloga="all ceo prodaja marketing"><div class="dashboard-img"><img src="https://stroka.si/Portals/0/Sales%20analysis_Page_03.png" alt="Sales detail"></div><div class="dashboard-body"><h3>Prodajni trendi in kupci</h3><p>Dodatni prodajni pogled za hitro analizo strank, realizacije in odstopanj.</p><div class="tags"><span class="tag">Trendi</span><span class="tag">Kupci</span><span class="tag">Realizacija</span></div></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="section section-panel" id="primeri">
+  <div class="section-number">03</div>
+  <div class="s-max">
+    <div class="section-head reveal"><div><div class="section-kicker">Iz prakse</div><h2 class="section-title">Primeri iz prakse</h2></div></div>
+    <div class="case-slider reveal">
+      <div class="case-track" id="caseTrack">
+        <div class="case-slide"><div class="case-card"><div class="case-left"><div class="case-num">01</div><div class="case-company">Carglass</div><div class="case-type">AI nabava</div></div><div class="case-content"><div class="case-cols"><div><div class="case-label">Izziv</div><p class="case-text">Kompleksna nabava več tisoč artiklov, ročna priprava naročil, visoke zaloge in urgentne dobave.</p></div><div><div class="case-label">Rešitev</div><p class="case-text">AI rešitev OrderGlass za napovedovanje povpraševanja in avtomatsko pripravo optimalnih naročil.</p></div><div><div class="case-label">Rezultati</div><div class="result-box"><strong>87.5%</strong><span>manj časa za pripravo naročil</span></div><div class="result-box"><strong>€500K+</strong><span>sproščenega kapitala</span></div></div></div><div class="case-footer"><a class="text-link" target="_blank" href="https://stroka.si/Vsebine/Studije-primerov/ko-ai-prevzame-narocila-zgodba-o-optimizaciji-nabave-v-carglass">Preberite celotno študijo →</a></div></div></div></div>
+        <div class="case-slide"><div class="case-card"><div class="case-left"><div class="case-num">02</div><div class="case-company">Evitas</div><div class="case-type">Power BI</div></div><div class="case-content"><div class="case-cols"><div><div class="case-label">Izziv</div><p class="case-text">Velika količina podatkov iz ERP sistema, ročne analize in zastarele informacije za odločanje.</p></div><div><div class="case-label">Rešitev</div><p class="case-text">Implementacija Power BI poročil za prodajo, nabavo, finance in upravljanje zalog.</p></div><div><div class="case-label">Rezultati</div><div class="result-box"><strong>Real-time</strong><span>vpogled v poslovanje</span></div><div class="result-box"><strong>Manj</strong><span>ročnega dela pri analizah</span></div></div></div><div class="case-footer"><a class="text-link" target="_blank" href="https://stroka.si/Vsebine/Studije-primerov/od-podatkov-do-moci-odlocitev-kako-je-power-bi-podjetju-evitas-omogocil-strateski-preskok">Preberite celotno študijo →</a></div></div></div></div>
+        <div class="case-slide"><div class="case-card"><div class="case-left"><div class="case-num">03</div><div class="case-company">Blažič</div><div class="case-type">Integracija podatkov</div></div><div class="case-content"><div class="case-cols"><div><div class="case-label">Izziv</div><p class="case-text">Razdrobljeni podatki iz ERP, proizvodnje, WMS, CRM in drugih virov ter zamudno delo z Exceli.</p></div><div><div class="case-label">Rešitev</div><p class="case-text">Power BI analitika z integracijo več podatkovnih virov in stabilno podatkovno infrastrukturo.</p></div><div><div class="case-label">Rezultati</div><div class="result-box"><strong>80%</strong><span>krajši čas za vpoglede</span></div><div class="result-box"><strong>30.000+</strong><span>artiklov v realnem času</span></div></div></div><div class="case-footer"><a class="text-link" target="_blank" href="https://stroka.si/Vsebine/Studije-primerov/ko-podatki-spregovorijo-kako-smo-s-power-bi-spoznali-kateri-podatki-nam-prinasajo-dodano-vrednost">Preberite celotno študijo →</a></div></div></div></div>
+        <div class="case-slide"><div class="case-card"><div class="case-left"><div class="case-num">04</div><div class="case-company">TBS Team 24</div><div class="case-type">Power BI analitika</div></div><div class="case-content"><div class="case-cols"><div><div class="case-label">Izziv</div><p class="case-text">Množica dnevnih operativnih podatkov iz asistence, ki jih niso znali smiselno izkoristiti za načrtovanje kapacitet in partnerske mreže.</p></div><div><div class="case-label">Rešitev</div><p class="case-text">Power BI v povezavi s PANTHEON ERP sistemom za prognoziranje, vizualni prikaz KPI-jev in proaktivno upravljanje virov ter podizvajalcev.</p></div><div><div class="case-label">Rezultati</div><div class="result-box"><strong>Real-time</strong><span>vpogled v operativne podatke</span></div><div class="result-box"><strong>Proaktivno</strong><span>načrtovanje partnerske mreže</span></div></div></div><div class="case-footer"><a class="text-link" href="#demo-form">Zahtevajte DEMO →</a></div></div></div></div>
+        <div class="case-slide"><div class="case-card"><div class="case-left"><div class="case-num">05</div><div class="case-company">Stroka produkt</div><div class="case-type">Interni primer</div></div><div class="case-content"><div class="case-cols"><div><div class="case-label">Izziv</div><p class="case-text">Podatki razpršeni po oddelkih, ročna poročila in omejen dostop do informacij.</p></div><div><div class="case-label">Rešitev</div><p class="case-text">Postopna uvedba Power BI analitik za prodajo, marketing, računovodstvo, helpdesk in projektno pisarno.</p></div><div><div class="case-label">Rezultati</div><div class="result-box"><strong>87%</strong><span>manj časa za poročila</span></div><div class="result-box"><strong>80</strong><span>zaposlenih z dostopom</span></div></div></div><div class="case-footer"><a class="text-link" target="_blank" href="https://stroka.si/Vsebine/Studije-primerov/87-manj-casa-za-porocila-kako-smo-80-zaposlenim-omogocili-dostop-do-podatkov">Preberite celotno študijo →</a></div></div></div></div>
+      </div>
+      <div class="slider-nav"><button class="slider-btn" id="prevCase">←</button><button class="slider-dot active" data-slide="0"></button><button class="slider-dot" data-slide="1"></button><button class="slider-dot" data-slide="2"></button><button class="slider-dot" data-slide="3"></button><button class="slider-dot" data-slide="4"></button><button class="slider-btn" id="nextCase">→</button></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-lightline">
+  <div class="section-number">04</div>
+  <div class="s-max">
+    <div class="section-head reveal"><div><div class="section-kicker">Proces implementacije</div><h2 class="section-title">Od ideje do live dashboarda v 4 korakih</h2></div></div>
+    <div class="steps-grid reveal">
+      <div class="step"><div class="step-num">01</div><div class="step-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div><h3>Posnetek stanja</h3><p>Pregledamo podatkovne vire, procese in ključne KPI-je.</p></div>
+      <div class="step"><div class="step-num">02</div><div class="step-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div><h3>Načrt in arhitektura</h3><p>Določimo podatkovni model, integracije in strukturo dashboardov.</p></div>
+      <div class="step"><div class="step-num">03</div><div class="step-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><h3>Razvoj in implementacija</h3><p>Razvijemo Power BI rešitev in povežemo podatkovne vire.</p></div>
+      <div class="step"><div class="step-num">04</div><div class="step-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><h3>Usposabljanje in podpora</h3><p>Usposobimo ekipo, pripravimo dokumentacijo in nudimo podporo.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-panel">
+  <div class="section-number">05</div>
+  <div class="s-max">
+    <div class="section-head reveal"><div><div class="section-kicker">Zakaj Skupina stroka.si</div><h2 class="section-title">Izkušnje, ki prinašajo merljive rezultate</h2></div></div>
+    <div class="metrics reveal"><div class="metric"><strong>100+</strong><span>Power BI rešitev</span><small>v podjetjih različnih panog</small></div><div class="metric"><strong>30+</strong><span>let IT izkušenj</span><small>na slovenskem in regionalnem trgu</small></div><div class="metric"><strong>800+</strong><span>poslovnih strank</span><small>ki zaupajo naši skupini</small></div></div>
+    <div class="feature-grid reveal"><div class="feature"><div class="feature-bar"></div><h3>Native integracija s PANTHEON ERP</h3><p>Neposredna povezava z obstoječimi podatki pomeni manj ročnega dela, manj napak in hitrejše rezultate.</p></div><div class="feature"><div class="feature-bar"></div><h3>Prva plošča v 2–4 tednih</h3><p>Hiter začetek z jasno opredeljenim obsegom in merljivimi KPI-ji.</p></div><div class="feature"><div class="feature-bar"></div><h3>Prilagodljiv dizajn</h3><p>Dashboardi sledijo vašim procesom, ne obratno.</p></div></div>
+  </div>
+</section>
+
+<!-- ROI KALKULATOR -->
+<section class="section section-panel" id="roi-kalkulator">
+  <div class="section-number">06</div>
+  <div class="s-max">
+    <div class="section-head reveal">
+      <div>
+        <div class="section-kicker">Kalkulator ROI</div>
+        <h2 class="section-title">V koliko časa se vam povrne Power BI?</h2>
+      </div>
+      <p class="section-copy">Vnesite podatke o vaši ekipi in preverite, kakšen je dejanski prihranek pri uvedbi Power BI analitike.</p>
+    </div>
+    <div class="roi-wrap reveal">
+      <div class="roi-inputs">
+        <div class="roi-input-group">
+          <label>Število zaposlenih, ki delajo na poročilih</label>
+          <div class="roi-slider-row">
+            <input type="range" class="roi-slider" id="sZaposlenih" min="1" max="20" value="3" oninput="calcROI()">
+            <span class="roi-val" id="vZaposlenih">3</span>
+          </div>
+        </div>
+        <div class="roi-input-group">
+          <label>Delež časa, namenjenega poročilom (%)</label>
+          <div class="roi-slider-row">
+            <input type="range" class="roi-slider" id="sCas" min="5" max="60" value="25" oninput="calcROI()">
+            <span class="roi-val" id="vCas">25%</span>
+          </div>
+        </div>
+        <div class="roi-input-group">
+          <label>Povprečna bruto mesečna plača zaposlenih (€)</label>
+          <div class="roi-slider-row">
+            <input type="range" class="roi-slider" id="sPlaca" min="1500" max="6000" step="100" value="2800" oninput="calcROI()">
+            <span class="roi-val" id="vPlaca">2.800 €</span>
+          </div>
+        </div>
+        <div class="roi-input-group">
+          <label>So to pretežno poslovni analitiki?</label>
+          <div class="filter-pills" style="margin-top:4px">
+            <span class="filter-pill active" id="typePa" onclick="setType('pa')">Da, analitiki</span>
+            <span class="filter-pill" id="typeOther" onclick="setType('other')">Ne, drugi profili</span>
+          </div>
+        </div>
+        <div class="roi-note">Izračun temelji na tipičnem znižanju časa za ročno poročanje za <strong>75–85 %</strong> po uvedbi Power BI. Orientacijska ocena stroška uvedbe: 8.000–20.000 €.</div>
+      </div>
+      <div class="roi-results">
+        <div class="roi-metric">
+          <div class="roi-metric-label">Letni strošek časa za poročila (pred Power BI)</div>
+          <div class="roi-metric-value" id="roiStrosek">—</div>
+          <div class="roi-metric-sub">Ocena stroškov dela za ročno pripravo poročil</div>
+        </div>
+        <div class="roi-metric">
+          <div class="roi-metric-label">Prihranek po uvedbi Power BI (letno)</div>
+          <div class="roi-metric-value" id="roiPrihranek" style="color:var(--gold)">—</div>
+          <div class="roi-metric-sub">Pri 80 % zmanjšanju časa za poročanje</div>
+        </div>
+        <div class="roi-metric">
+          <div class="roi-metric-label">Povrnitev naložbe (ROI)</div>
+          <div class="roi-metric-value" id="roiMeseci">—</div>
+          <div class="roi-metric-sub">Okvirni čas povrnitve ob investiciji 12.000 €</div>
+        </div>
+        <a href="#demo-form" class="btn-primary" style="width:100%;justify-content:center;margin-top:8px">Preverite rešitev za vaše podjetje →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKRBNIŠKA POGODBA -->
+<section class="section" id="skrbnistvo">
+  <div class="section-number">07</div>
+  <div class="s-max">
+    <div class="care-grid">
+      <div class="reveal">
+        <div class="section-kicker">Skrbniška pogodba</div>
+        <h2 class="section-title">Skrbnik, ki pozna vaše podjetje</h2>
+        <p class="section-copy">Power BI ni projekt z začetkom in koncem — je živ sistem, ki raste z vašim podjetjem. Z našo skrbniško pogodbo dobite partnerja, ki skrbi za vaše dashboarde dolgoročno.</p>
+        <a href="#demo-form" class="btn-primary" style="margin-top:28px">Povprašajte o skrbništvu →</a>
+        <div class="care-features">
+          <div class="care-feature">
+            <div class="care-ico"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div><h4>Skrbnik, ki vas pozna</h4><p>Ni anonimne podpore — imate dedicirano kontaktno osebo, ki razume vaše procese, sisteme in specifike poslovanja.</p></div>
+          </div>
+          <div class="care-feature">
+            <div class="care-ico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <div><h4>Vzdrževanje in razvoj</h4><p>Skrbimo za posodobitve, prilagoditve ob poslovnih spremembah in razvoj novih poročil, ko jih potrebujete.</p></div>
+          </div>
+          <div class="care-feature">
+            <div class="care-ico"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+            <div><h4>Nadzor in proaktivnost</h4><p>Skrbnik aktivno spremlja vaš sistem, zazna težave preden jih opazite vi, in predlaga izboljšave glede na trende.</p></div>
+          </div>
+          <div class="care-feature">
+            <div class="care-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+            <div><h4>Vedno dosegljiv</h4><p>Prednostna podpora z dogovorjenimi odzivnimi časi — vaše poročilo mora delovati, ko ga potrebujete.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="care-highlight reveal">
+        <div class="care-tag"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:#51d3d0;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Skrbniška pogodba</div>
+        <h3>Kaj je vključeno</h3>
+        <p>Naša skrbniška pogodba je prilagojena vsakemu podjetju posebej. Skupaj opredelimo obseg in vzpostavimo dolgoročno partnerstvo.</p>
+        <div class="check-list">
+          <div>Dedicirani skrbnik z znanjem vašega sistema</div>
+          <div>Redni pregledi in poročila o stanju sistema</div>
+          <div>Prilagoditve ob spremembi poslovnih procesov</div>
+          <div>Spremljanje trendov in predlogi novih rešitev</div>
+          <div>Integracija novih podatkovnih virov</div>
+          <div>Usposabljanje novih uporabnikov</div>
+          <div>Prednostna tehnična podpora z SLA</div>
+          <div>Letni pregled in razvojna strategija</div>
+        </div>
+        <div style="margin-top:24px;padding:20px;background:rgba(63,168,169,.07);border:1px solid var(--teal-border);border-radius:14px">
+          <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--teal-2);margin-bottom:8px">Cena skrbništva</div>
+          <div style="font-family:var(--fh);font-size:1.1rem;color:#fff">Prilagojena glede na obseg sistema in potreb</div>
+          <div style="font-size:.82rem;color:var(--muted);margin-top:6px">Stopite v stik in skupaj določimo, kaj vaše podjetje potrebuje.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="soft-divider"></div>
+
+<!-- EKSPERT / ROMANA LESJAK -->
+<section class="section compact" id="ekspert">
+  <div class="s-max">
+    <div class="section-head reveal" style="margin-bottom:36px">
+      <div>
+        <div class="section-kicker">Naša strokovnjakinja</div>
+        <h2 class="section-title">Pravi ljudje za vaš uspeh</h2>
+      </div>
+      <p class="section-copy" style="max-width:400px">Za vsako uvedbo stoji izkušena ekipa. Spoznajte vodjo oddelka, ki bo poskrbela za vašo rešitev.</p>
+    </div>
+    <div class="expert-card reveal">
+      <div class="expert-photo-col">
+        <div class="expert-deco"></div>
+        <img class="expert-photo" src="https://media.licdn.com/dms/image/v2/D4D03AQEfWeig0yzyzQ/profile-displayphoto-scale_400_400/B4DZeHejrBHAAg-/0/1750324629800?e=1779926400&v=beta&t=ly7qMW7CLK_YFpyqaxldTugMwZZuINP8KgB2ztrtPAk" alt="Romana Lesjak">
+        <div class="expert-name">Romana Lesjak</div>
+        <div class="expert-title-badge">Vodja oddelka · Poslovna analitika</div>
+      </div>
+      <div class="expert-content">
+        <div class="section-kicker" style="margin-bottom:12px">Skupina stroka.si</div>
+        <h2 class="section-title" style="font-size:1.65rem;margin-bottom:16px">Strokovnjakinja za Power BI in ERP sisteme</h2>
+        <p>Romana je vodja oddelka poslovne analitike in PANTHEON ERP programa v Skupini stroka.si. Z bogatimi izkušnjami pri uvajanju poslovnih sistemov v podjetja in integracijah med različnimi poslovnimi programi je ena od najboljših strokovnjakinj na tem področju v regiji.</p>
+        <p>Vedno je v stiku z novostmi, pozna aktualne trende in ima za sabo že ogromno uspešnih uvedb Power BI rešitev v podjetja različnih panog — od proizvodnje do storitev in trgovine.</p>
+        <div class="expert-highlights">
+          <div class="expert-highlight"><strong>Power BI & ERP</strong><small>Globoko poznavanje integracije poslovnih sistemov</small></div>
+          <div class="expert-highlight"><strong>100+ uvedb</strong><small>Uspešne implementacije v podjetja vseh velikosti</small></div>
+          <div class="expert-highlight"><strong>Sledenje trendom</strong><small>Aktivna v skupnosti in vedno na tekočem z novostmi</small></div>
+          <div class="expert-highlight"><strong>Vaša partnerica</strong><small>Dostopna za vprašanja in konzultacije</small></div>
+        </div>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
+          <a href="https://www.linkedin.com/in/romana-lesjak-b29b285/" target="_blank" rel="noopener" class="linkedin-btn">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            Povežite se na LinkedIn
+          </a>
+          <a href="#demo-form" class="btn-secondary">Pošljite vprašanje →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section section-lightline" id="demo-form">
+  <div class="form-shell">
+    <div class="form-intro reveal"><div class="section-kicker" style="justify-content:center">Brezplačen DEMO</div><h2 class="section-title">Preizkusite Power BI brez obveznosti</h2><p class="section-copy">Izpolnite obrazec in pridobite dostop do demo okolja ali predlog za rešitev, ki najbolj ustreza vašim procesom.</p></div>
+    <div class="audience-grid reveal"><div class="audience"><strong>Vodstvo</strong><span>FinCheck, KPI-ji in strateški vpogledi.</span></div><div class="audience"><strong>Finance in nabava</strong><span>Cashflow, zaloge, dobavitelji in vezan kapital.</span></div><div class="audience"><strong>Prodaja in proizvodnja</strong><span>Prodajna analitika, OEE in operativni pregledi.</span></div></div>
+    <div class="form-box reveal"><div class="form-inner"><div class="form-title">Zahtevajte DEMO dostop</div><div class="form-sub">Odgovorili vam bomo v roku 24 ur z dostopnimi podatki.</div><form id="pbi-form"><div class="form-row"><div class="field"><label>Ime in priimek *</label><input type="text" name="ime" placeholder="Jana Novak" required></div><div class="field"><label>Podjetje *</label><input type="text" name="podjetje" placeholder="Vaše podjetje d.o.o." required></div></div><div class="form-row"><div class="field"><label>E-mail *</label><input type="email" name="email" placeholder="jana@podjetje.si" required></div><div class="field"><label>Telefon</label><input type="tel" name="telefon" placeholder="+386 ..."></div></div><div class="field"><label>Kateri DEMO vas zanima? *</label><select name="demo" required><option value="">— Izberite rešitev —</option><option>FinCheck – finančni kazalniki</option><option>PANTHEON analitika poslovanja</option><option>CashFlow Planner – načrtovanje denarnega toka</option><option>Analitika obračanja zalog</option><option>Analitika nabave</option><option>Analitika prodaje</option><option>Analitika proizvodnje / OEE</option><option>Lotus BI – poslovna inteligenca</option><option>DEMO po meri</option></select></div><button class="submit" type="submit">Pošlji zahtevek za DEMO →</button></form><div class="success" id="pbi-success"><h3>Zahtevek prejet</h3><p>Kontaktirali vas bomo v roku 24 ur.</p></div><div class="note"><strong>Potrebujete specifičen DEMO za svojo panogo?</strong> Kontaktirajte nas na <strong>ccc@stroka.si</strong> — pripravimo prilagojen demo za vaše poslovne procese.</div><p class="privacy">Z izpolnitvijo soglašate z našo <a href="https://stroka.si/Varstvo-osebnih-podatkov" target="_blank" rel="noopener" style="color:var(--muted);text-decoration:underline;">politiko zasebnosti</a>. Podatkov ne delimo s tretjimi osebami.</p></div></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner"><div><a href="https://www.stroka.si" class="footer-logo" target="_blank" rel="noopener">
+  <img src="https://stroka.si/Portals/0/strokasi_bel_png.png" alt="stroka.si">
+</a><div class="footer-tag">Z več kot 30-letnimi izkušnjami na področju IT rešitev pomagamo podjetjem sprejemati boljše odločitve.</div></div><div class="footer-col"><h4>Rešitve</h4><a href="#resitve">FinCheck</a><a href="#resitve">CashFlow Planner</a><a href="#resitve">OEE proizvodnja</a><a href="#dashboards">Vse nadzorne plošče</a></div><div class="footer-col"><h4>Primeri</h4><a href="https://stroka.si/Vsebine/Studije-primerov/ko-ai-prevzame-narocila-zgodba-o-optimizaciji-nabave-v-carglass" target="_blank">Carglass</a><a href="https://stroka.si/Vsebine/Studije-primerov/od-podatkov-do-moci-odlocitev-kako-je-power-bi-podjetju-evitas-omogocil-strateski-preskok" target="_blank">Evitas</a><a href="https://stroka.si/Vsebine/Studije-primerov/ko-podatki-spregovorijo-kako-smo-s-power-bi-spoznali-kateri-podatki-nam-prinasajo-dodano-vrednost" target="_blank">Blažič</a></div><div class="footer-col"><h4>Kontakt</h4><a href="mailto:ccc@stroka.si">ccc@stroka.si</a><a href="https://www.stroka.si" target="_blank">www.stroka.si</a><a href="https://stroka.si/Varstvo-osebnih-podatkov" target="_blank" rel="noopener">Politika zasebnosti</a></div></div>
+  <div class="footer-bottom"><span>© 2026 Stroka produkt d.o.o. Vse pravice pridržane.</span><span>Skupina stroka.si · ccc@stroka.si</span></div>
+</footer>
+
+<script>
+// ── DASHBOARD FILTERS ──────────────────────────────────────────
+let activeFilters = { panoga: 'all', vloga: 'all' };
+
+document.querySelectorAll('.filter-pill').forEach(pill => {
+  pill.addEventListener('click', function() {
+    const filterType = this.dataset.filter;
+    const filterValue = this.dataset.value;
+    activeFilters[filterType] = filterValue;
+    // Update active pill in this group
+    this.closest('.filter-pills').querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    this.classList.add('active');
+    applyFilters();
+  });
+});
+
+function applyFilters() {
+  document.querySelectorAll('#dashboardGrid .dashboard-card').forEach(card => {
+    const panoga = card.dataset.panoga || '';
+    const vloga = card.dataset.vloga || '';
+    const pMatch = activeFilters.panoga === 'all' || panoga.includes(activeFilters.panoga);
+    const vMatch = activeFilters.vloga === 'all' || vloga.includes(activeFilters.vloga);
+    card.classList.toggle('hidden', !(pMatch && vMatch));
+  });
+}
+
+// ── ROI CALCULATOR ─────────────────────────────────────────────
+let isAnalitik = true;
+function setType(t) {
+  isAnalitik = t === 'pa';
+  document.getElementById('typePa').classList.toggle('active', isAnalitik);
+  document.getElementById('typeOther').classList.toggle('active', !isAnalitik);
+  calcROI();
+}
+
+function fmt(n) { return n.toLocaleString('sl-SI', {maximumFractionDigits:0}) + ' €'; }
+
+function calcROI() {
+  const z = parseInt(document.getElementById('sZaposlenih').value);
+  const c = parseInt(document.getElementById('sCas').value) / 100;
+  const p = parseInt(document.getElementById('sPlaca').value);
+  document.getElementById('vZaposlenih').textContent = z;
+  document.getElementById('vCas').textContent = Math.round(c * 100) + '%';
+  document.getElementById('vPlaca').textContent = p.toLocaleString('sl-SI') + ' €';
+
+  // Annual cost = employees × monthly salary × 12 × % time × overhead factor
+  const overhead = isAnalitik ? 1.35 : 1.25; // employer costs
+  const annualCost = z * p * 12 * c * overhead;
+  const saving = annualCost * 0.80; // 80% reduction
+  const investment = 12000;
+  const months = saving > 0 ? Math.max(1, Math.round((investment / saving) * 12)) : null;
+
+  document.getElementById('roiStrosek').textContent = fmt(Math.round(annualCost));
+  document.getElementById('roiPrihranek').textContent = fmt(Math.round(saving));
+  document.getElementById('roiMeseci').textContent = months ? months + ' mesecev' : '—';
+}
+calcROI();
+
+const revealObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revealObs.unobserve(e.target)}})},{threshold:.08,rootMargin:'0px 0px -30px 0px'});document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
+
+document.querySelectorAll('.solution-tab').forEach(tab=>{tab.addEventListener('click',function(){document.querySelectorAll('.solution-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.solution-detail').forEach(d=>d.classList.remove('visible'));this.classList.add('active');const detail=document.getElementById('detail-'+this.dataset.tab);if(detail)detail.classList.add('visible')})});
+
+let currentCase=0;const caseSlides=document.querySelectorAll('.case-slide');const caseTrack=document.getElementById('caseTrack');const caseDots=document.querySelectorAll('.slider-dot');function goCase(n){currentCase=(n+caseSlides.length)%caseSlides.length;caseTrack.style.transform='translateX(-'+currentCase*100+'%)';caseDots.forEach((d,i)=>d.classList.toggle('active',i===currentCase))}document.getElementById('nextCase').addEventListener('click',()=>goCase(currentCase+1));document.getElementById('prevCase').addEventListener('click',()=>goCase(currentCase-1));caseDots.forEach((d,i)=>d.addEventListener('click',()=>goCase(i)));let autoCase=setInterval(()=>goCase(currentCase+1),6500);document.querySelector('.case-slider').addEventListener('mouseenter',()=>clearInterval(autoCase));document.querySelector('.case-slider').addEventListener('mouseleave',()=>{autoCase=setInterval(()=>goCase(currentCase+1),6500)});
+
+var SCRIPT_URL = 'POWER_AUTOMATE_URL_PLACEHOLDER';
+
+document.getElementById('pbi-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  var form = this;
+  var btn = form.querySelector('.submit');
+  var fd = new FormData(form);
+
+  var ime = (fd.get('ime') || '').trim();
+  var podjetje = (fd.get('podjetje') || '').trim();
+  var email = (fd.get('email') || '').trim();
+  var telefon = (fd.get('telefon') || '').trim();
+  var demo = fd.get('demo') || '';
+
+  if (!ime || !podjetje || !email || !demo) {
+    alert('Prosimo, izpolnite vsa obvezna polja.');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Pošiljam...';
+
+  var payload = JSON.stringify({
+    ime: ime,
+    podjetje: podjetje,
+    email: email,
+    telefon: telefon || '-',
+    demo: demo,
+    vir: 'Power BI DEMO Landing Page',
+    datum: new Date().toLocaleString('sl-SI')
+  });
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', SCRIPT_URL, true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+
+  xhr.onload = function() {
+    if (xhr.status >= 200 && xhr.status < 300) {
+      form.style.display = 'none';
+      document.getElementById('pbi-success').style.display = 'block';
+    } else {
+      btn.disabled = false;
+      btn.textContent = 'Pošlji zahtevek za DEMO →';
+      alert('Pri oddaji zahtevka je prišlo do napake.');
+      console.error('Power Automate error:', xhr.status, xhr.responseText);
+    }
+  };
+
+  xhr.onerror = function() {
+    btn.disabled = false;
+    btn.textContent = 'Pošlji zahtevek za DEMO →';
+    alert('Prišlo je do napake pri pošiljanju.');
+    console.error('Network error');
+  };
+
+  xhr.send(payload);
+});
+</script>
+</body>
+</html>
