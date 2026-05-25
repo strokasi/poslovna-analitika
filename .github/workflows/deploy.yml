@@ -1,0 +1,45 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Inject Power Automate URL – PowerBI DEMO
+        env:
+          POWERBI_DEMO_PA_URL: ${{ secrets.POWERBI_DEMO_PA_URL }}
+        run: |
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          p = Path("PowerBI_DEMO.html")
+          s = p.read_text(encoding="utf-8")
+          s = s.replace("POWER_AUTOMATE_URL_PLACEHOLDER", os.environ["POWERBI_DEMO_PA_URL"])
+          p.write_text(s, encoding="utf-8")
+          PY
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
